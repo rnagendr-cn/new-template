@@ -1,0 +1,18 @@
+const express = require("express")
+const path = require("path")
+const app = express()
+const port = process.env.NODE_PORT || "9000"
+
+app.use(
+  "/projects/{{endpoint}}/",
+  express.static(path.join(__dirname, "build"))
+)
+
+const { pingHandler } = require("./modules/handlers")
+app.get("/ping", pingHandler)
+
+app.get("/*", function (req, res) {
+  res.sendFile(path.join(__dirname, "build", "index.html"))
+})
+
+app.listen(port)
